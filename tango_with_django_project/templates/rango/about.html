@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+  <head>
+    <title>About</title>
+  </head>
+
+  <body>
+    <h1>Rango says...</h1>
+
+    <div>
+      hey there, this is the about page! It was created by
+      <strong> {{ author }} </strong> <br />
+    </div>
+
+    <div>
+      <a href="/rango/">Index</a><br />
+    </div>
+
+    <br/>
+    <img src="{% static 'images/cat.jpeg' %}" alt="Picture of a Cat" />
+
+  </body>
+</html>
