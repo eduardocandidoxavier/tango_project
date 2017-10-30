@@ -25,12 +25,13 @@ def populate():
         },
     ]
 
-    cats = {'Professores IC': pages1,
-            'Jornais': pages2}
+    cats = { 'Professores IC': {'pages': pages1, 'views': 10, 'likes': 5},
+              'Jornais': {'pages': pages2, 'views': 10, 'likes': 5},
+             }
 
     for cat in cats.keys():
-        c = add_category(cat)
-        for page in cats[cat]:
+        c = add_category(cat, cats[cat])
+        for page in cats[cat]['pages']:
             add_page(c, page['title'],page['url'])
     print_categories_pages()
 
@@ -39,8 +40,10 @@ def print_categories_pages():
         for p in Page.objects.filter(category=c):
             print('Category {0}, Page {1}'.format(str(c),str(p)))
 
-def add_category(cat):
+def add_category(cat, info):
     c = Category.objects.get_or_create(name=cat)[0]
+    c.views = info['views']
+    c.likes = info['likes']
     c.save()
     return c
 
