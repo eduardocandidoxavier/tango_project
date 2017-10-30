@@ -10,19 +10,22 @@ from rango.models import Category, Page
 def populate():
     pages1 = [
         {'title': 'Eduardo C. Xavier',
-        'url': 'http://www.ic.unicamp.br/~eduardo'},
+        'url': 'http://www.ic.unicamp.br/~eduardo',
+         'views': 2},
 
         {'title': 'Zanoni Dias',
-         'url': 'http://www.ic.unicamp.br/~zanoni'},
+         'url': 'http://www.ic.unicamp.br/~zanoni',
+         'views': 3},
     ]
 
     pages2 = [
         {'title': 'Folha de São Paulo',
-         'url': 'http://www.folha.uol.com.br'},
+         'url': 'http://www.folha.uol.com.br',
+         'views': 4},
 
         {'title': 'Estado de São Paulo',
-         'url': 'http://www.estadao.com.br'
-        },
+         'url': 'http://www.estadao.com.br',
+         'views': 5},
     ]
 
     cats = { 'Professores IC': {'pages': pages1, 'views': 10, 'likes': 5},
@@ -32,7 +35,7 @@ def populate():
     for cat in cats.keys():
         c = add_category(cat, cats[cat])
         for page in cats[cat]['pages']:
-            add_page(c, page['title'],page['url'])
+            add_page(c, page['title'],page['url'], page['views'])
     print_categories_pages()
 
 def print_categories_pages():
@@ -48,7 +51,10 @@ def add_category(cat, info):
     return c
 
 def add_page(category, title, url, views=0):
-    p = Page.objects.get_or_create(category=category, title=title, url=url, views=views)[0]
+    p = Page.objects.get_or_create(title=title)[0]
+    p.category = category
+    p.url = url
+    p.views = views
     p.save()
     return p
 
