@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+  <head>
+    <title>Add Page</title>
+  </head>
+    <div>
+    <form action="/rango/add_page/" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </form>
+    </div>
+</html>
