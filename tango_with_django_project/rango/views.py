@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rango.models import Category, Page
-from rango.forms import PageForm
+from rango.forms import PageForm, CategoryForm
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -42,3 +42,16 @@ def add_page(request):
             print(form.errors)
     return render(request, 'rango/add_page.html', {'form': form})
 
+
+def add_category(request):
+    form = CategoryForm()
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            cat = Category()
+            cat.name = form.cleaned_data['name']
+            cat.save()
+            return index(request)
+        else:
+            print(form.errors)
+    return render(request, 'rango/add_category.html', {'form': form})
