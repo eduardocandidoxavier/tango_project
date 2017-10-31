@@ -27,10 +27,10 @@ def show_category(request, category_name_slug):
     return render(request, 'rango/show_category.html', context_dict)
 
 
-def add_page(request):
-    form = PageForm()
+def add_page(request, category_name_slug=None):
+    form = PageForm(category_name_slug)
     if request.method == 'POST':
-        form = PageForm(request.POST)
+        form = PageForm(category_name_slug, request.POST)
         if form.is_valid():
             page = Page()
             page.title = form.cleaned_data['title']

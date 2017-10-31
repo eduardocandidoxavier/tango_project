@@ -8,9 +8,13 @@ class PageForm(forms.Form):
     url = forms.URLField(max_length=128,initial='http://', help_text='Enter the URL of the page.')
     category = forms.ModelChoiceField(queryset=None)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, category_name_slug=None, *args, **kwargs):
         super(PageForm, self).__init__(*args, **kwargs)
         self.fields['category'].queryset = Category.objects.all()
+
+        if category_name_slug and Category.objects.filter(slug=category_name_slug).count() > 0:
+            self.fields['category'].initial = Category.objects.filter(slug=category_name_slug)[0]
+
 
     def clean_category(self):
         cat_name = self.cleaned_data['category']
