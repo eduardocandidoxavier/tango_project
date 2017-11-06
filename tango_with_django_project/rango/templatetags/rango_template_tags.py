@@ -5,5 +5,6 @@ register = template.Library()
 
 @register.inclusion_tag('rango/cats.html')
 def get_category_list(category=None):
-    return {'cats': Category.objects.all()}
+    return {'cats': Category.objects.all(),
+            'active_cat': category}
 
