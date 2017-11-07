@@ -126,3 +126,15 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+#MAIL_SERVER = 'smtp.googlemail.com'
+#MAIL_PORT = 587
+#MAIL_USE_TLS = True
+#MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+#MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ.get('MAIL_USERNAME')
+EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASSWORD')
+EMAIL_PORT = 587
