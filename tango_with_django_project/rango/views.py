@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rango.models import Category, Page
 from rango.forms import PageForm, CategoryForm
+from django.contrib import messages
+from django.shortcuts import redirect
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -37,8 +39,10 @@ def add_page(request, category_name_slug=None):
             page.url = form.cleaned_data['url']
             page.category = Category.objects.filter(name=form.cleaned_data['category'])[0]
             page.save()
-            return index(request)
+            messages.success(request, 'Page successfully included in category '+page.category.name)
+            return redirect('index')
         else:
+            messages.error(request, 'Page not included, form invalid!')
             print(form.errors)
     return render(request, 'rango/add_page.html', {'form': form})
 
