@@ -136,7 +136,7 @@ def user_login(request):
     return render(request,'auth/user_login.html', context_dict)
 
 
-
+@login_required(login_url='user_login')
 def user_logout(request):
     logout(request)
     messages.success(request,'Your are now logged out!')
