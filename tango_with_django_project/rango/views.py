@@ -4,13 +4,19 @@ from rango.models import Category, Page
 from rango.forms import PageForm, CategoryForm
 from django.contrib import messages
 from django.shortcuts import redirect
+from rango.helper import visitor_cookie_handler, return_visits
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     pages_list = Page.objects.order_by('-views')[:5]
+    visits = return_visits(request)
     context_dict = {'categories': category_list,
-                    'pages_list': pages_list}
-    return render(request, 'rango/index.html', context_dict)
+                    'pages_list': pages_list,
+                    'visits': visits}
+    response = render(request, 'rango/index.html', context_dict)
+    visitor_cookie_handler(request, response)
+    return response
+
 
 def about(request):
     context_dict = {'author': 'Eduardo C Xavier'}

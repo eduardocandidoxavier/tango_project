@@ -9,6 +9,9 @@
 <h1>Rango says...</h1>
 <div>
   hey there partner! <br />
+  {% if visits %}
+  <p>Number of visits: {{ visits }}</p>
+  {% endif %}
 </div>
 <div>
   {% if categories %}
