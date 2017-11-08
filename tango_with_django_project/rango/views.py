@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from rango.models import Category, Page
-from rango.forms import PageForm, CategoryForm
+from rango.models import Category, Page, UserProfile
+from rango.forms import PageForm, CategoryForm, UserForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from rango.helper import visitor_cookie_handler, return_cookie_value
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -67,3 +69,31 @@ def add_category(request):
             messages.error(request, 'Category not included, invalid form!')
             print(form.errors)
     return render(request, 'rango/add_category.html', {'form': form})
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        if user_form.is_valid():
+            user = User()
+            user.email = user_form.cleaned_data['email']
+            user.username = user.email
+            user.set_password(user_form.cleaned_data['password'])
+            user.save()
+            user_profile = UserProfile()
+            user_profile.user = user
+            user_profile.website = user_form.cleaned_data['website']
+            if 'picture' in request.FILES:
+                user_profile.picture = request.FILES['picture']
+            user_profile.save()
+            login(request, user)
+            messages.success(request,'Registration successfully happened. Now confirm your email.')
+            return redirect('index')
+        else:
+            print(user_form.errors)
+            messages.error(request,'Check out your data, invalid form!.')
+    else:
+        user_form = UserForm()
+    context_dict ={ 'user_form': user_form,}
+    return render(request,'auth/register.html', context_dict)
+
