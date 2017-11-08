@@ -7,6 +7,8 @@ from rango.helper import visitor_cookie_handler, return_cookie_value
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from rango.helper import verify_confirmation_token, send_confirmation_email
+from django.contrib.auth.decorators import login_required
+from rango.decorators import user_email_confirmed
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -36,7 +38,8 @@ def show_category(request, category_name_slug):
         context_dict['pages'] = None
     return render(request, 'rango/show_category.html', context_dict)
 
-
+@login_required(login_url='user_login')
+@user_email_confirmed
 def add_page(request, category_name_slug=None):
     form = PageForm(category_name_slug)
     if request.method == 'POST':
@@ -54,7 +57,8 @@ def add_page(request, category_name_slug=None):
             print(form.errors)
     return render(request, 'rango/add_page.html', {'form': form})
 
-
+@login_required(login_url='user_login')
+@user_email_confirmed
 def add_category(request):
     form = CategoryForm()
     if request.method == 'POST':
