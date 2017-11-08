@@ -42,7 +42,7 @@ def add_page(request, category_name_slug=None):
             messages.success(request, 'Page successfully included in category '+page.category.name)
             return redirect('index')
         else:
-            messages.error(request, 'Page not included, form invalid!')
+            messages.error(request, 'Page not included, invalid form!')
             print(form.errors)
     return render(request, 'rango/add_page.html', {'form': form})
 
@@ -55,7 +55,9 @@ def add_category(request):
             cat = Category()
             cat.name = form.cleaned_data['name']
             cat.save()
-            return index(request)
+            messages.success(request, 'Category '+cat.name+' successfully included! ')
+            return redirect('index')
         else:
+            messages.error(request, 'Category not included, invalid form!')
             print(form.errors)
     return render(request, 'rango/add_category.html', {'form': form})
