@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from rango.helper import visitor_cookie_handler, return_cookie_value
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-
+from rango.helper import verify_confirmation_token, send_confirmation_email
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -87,6 +87,7 @@ def register(request):
                 user_profile.picture = request.FILES['picture']
             user_profile.save()
             login(request, user)
+            send_confirmation_email(request, user)
             messages.success(request,'Registration successfully happened. Now confirm your email.')
             return redirect('index')
         else:
@@ -96,4 +97,15 @@ def register(request):
         user_form = UserForm()
     context_dict ={ 'user_form': user_form,}
     return render(request,'auth/register.html', context_dict)
+
+
+def confirm_email(request, uidb64, token):
+    user = verify_confirmation_token(request, uidb64, token)
+    if user:
+        login(request, user)
+        messages.success(request, 'You successfully confirmed your account. Welcome!')
+        return redirect('index')
+    else:
+        messages.error('Activation link is invalid or expired!')
+        return redirect('index')
 

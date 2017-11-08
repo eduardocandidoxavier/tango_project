@@ -8,6 +8,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
 from rango.models import UserProfile
 
+
 def visitor_cookie_handler(request):
     visits = int(return_cookie_value(request, 'visits', '1'))
     last_time_visit = return_cookie_value(request, 'last_time_visit', str(datetime.now()))
@@ -54,3 +55,4 @@ def verify_confirmation_token(request, uidb64, token):
         return user
     else:
         return None
+

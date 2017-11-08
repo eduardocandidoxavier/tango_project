@@ -12,4 +12,7 @@ urlpatterns =[
     url(r'^add_page/$', views.add_page, name='add_page'),
     url(r'^add_category/$', views.add_category, name='add_category'),
     url(r'^register/$', views.register, name='register'),
+
+    url(r'^confirm_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.confirm_email, name='confirm_email'),
 ]
