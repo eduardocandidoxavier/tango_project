@@ -133,4 +133,8 @@ def user_login(request):
 
 
 
+def user_logout(request):
+    logout(request)
+    messages.success(request,'Your are now logged out!')
+    return redirect('index')
 
