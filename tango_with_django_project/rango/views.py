@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rango.models import Category, Page, UserProfile
-from rango.forms import PageForm, CategoryForm, UserForm
+from rango.forms import PageForm, CategoryForm, UserForm, LoginForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from rango.helper import visitor_cookie_handler, return_cookie_value
@@ -108,4 +108,29 @@ def confirm_email(request, uidb64, token):
     else:
         messages.error('Activation link is invalid or expired!')
         return redirect('index')
+
+
+def user_login(request):
+    if request.method == 'POST':
+        login_form = LoginForm(data=request.POST)
+        if login_form.is_valid():
+            username = login_form.cleaned_data['email']
+            password = login_form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, 'You are now logged in.')
+                    return redirect('index')
+                else:
+                    messages.error(request, 'Your account is disabled.')
+        else:
+            messages.error('Invalid username or password.')
+    else:
+        login_form = LoginForm()
+    context_dict = {'login_form': login_form}
+    return render(request,'auth/user_login.html', context_dict)
+
+
+
 

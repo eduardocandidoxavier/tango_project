@@ -54,3 +54,10 @@ class UserForm(forms.Form):
             raise ValidationError(('Email already registered.'), code='invalid')
         return self.cleaned_data['email']
 
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput())
+
+
