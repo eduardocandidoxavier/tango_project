@@ -1,0 +1,6 @@
+{% if user_profile %}
+    {% if not user_profile.confirmed  %}
+    <li><strong>You have to confirm your email <a href="{% url 'confirm_user_email' %}">here</a> </strong></li>
+    {% endif %}
+{% endif %}
+

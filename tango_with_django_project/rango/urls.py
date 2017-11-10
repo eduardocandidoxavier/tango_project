@@ -20,4 +20,8 @@ urlpatterns =[
 
     url(r'^user_logout/$', views.user_logout, name='user_logout'),
 
+    url(r'^confirm_user_email/$', views.confirm_user_email, name='confirm_user_email'),
+    url(r'^resend_confirmation_email/(?P<uid>[0-9A-Za-z_\-]+)/$', views.resend_confirmation_email, name='resend_confirmation_email'),
+
+
 ]

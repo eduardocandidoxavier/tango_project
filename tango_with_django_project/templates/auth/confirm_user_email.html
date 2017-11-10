@@ -1,0 +1,18 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+  Confirm Email
+{% endblock %}
+{% block body_block %}
+    <h1>Confirm email.</h1>
+    <p>
+    You have to confirm your email before you can fully use Rango. Click
+    in the button bellow if you want to re-send a confirmation email to
+        <strong>{{ user.email }}</strong>.
+    </p>
+    <form id="send_email_form" action="{% url 'resend_confirmation_email'  user.id  %}" method="post">
+    {% csrf_token %}
+    <input type="submit" name="submit" value="Send email." />
+    </form>
+{% endblock %}

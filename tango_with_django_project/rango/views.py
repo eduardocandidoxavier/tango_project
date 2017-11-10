@@ -142,3 +142,20 @@ def user_logout(request):
     messages.success(request,'Your are now logged out!')
     return redirect('index')
 
+
+@login_required(login_url='user_login')
+def confirm_user_email(request):
+    return render(request, 'auth/confirm_user_email.html', {})
+
+@login_required(login_url='user_login')
+def resend_confirmation_email(request, uid):
+    aux = User.objects.filter(id=uid)
+    if aux.exists() > 0:
+        user = aux[0]
+        send_confirmation_email(request, user)
+        messages.success(request,'Confirmation email sent!')
+    else:
+        messages.error(request,'User not found!')
+    return redirect('index')
+
+

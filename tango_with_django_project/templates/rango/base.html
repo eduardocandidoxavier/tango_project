@@ -28,6 +28,7 @@
     <div>
         <ul>
             {% if user.is_authenticated %}
+                {% get_user_profile user %}
                 <li><a href="{% url 'add_category' %}">Add a Category</a><br /></li>
                 <li><a href="{% url 'add_page' %}">Add a Page</a><br /></li>
                 <li><a href="{% url 'user_logout' %}">Log Out</a><br /></li>
