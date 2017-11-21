@@ -129,9 +129,9 @@ def user_login(request):
                 else:
                     messages.error(request, 'Your account is disabled.')
             else:
-                messages.error('Invalid username or password.')
+                messages.error(request, 'Invalid username or password.')
         else:
-            messages.error('Invalid username or password.')
+            messages.error(request, 'Invalid username or password.')
     else:
         login_form = LoginForm()
     context_dict = {'login_form': login_form}
