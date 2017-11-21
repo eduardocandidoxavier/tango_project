@@ -1,0 +1,16 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+  Update Your Information
+{% endblock %}
+
+{% block body_block %}
+    <h1>Update Here</h1><br />
+    <p>Leave blank the fields you want to keep unchanged.</p>
+    <form id="user_form" action="{% url 'update_user_profile' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ update_user_form.as_p }}
+    <input type="submit" name="submit" value="Submit" />
+    </form>
+{% endblock %}
