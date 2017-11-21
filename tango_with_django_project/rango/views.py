@@ -110,7 +110,7 @@ def confirm_email(request, uidb64, token):
         messages.success(request, 'You successfully confirmed your account. Welcome!')
         return redirect('index')
     else:
-        messages.error('Activation link is invalid or expired!')
+        messages.error(request, 'Activation link is invalid or expired!')
         return redirect('index')
 
 
@@ -128,6 +128,8 @@ def user_login(request):
                     return redirect('index')
                 else:
                     messages.error(request, 'Your account is disabled.')
+            else:
+                messages.error('Invalid username or password.')
         else:
             messages.error('Invalid username or password.')
     else:
