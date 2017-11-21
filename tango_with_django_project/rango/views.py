@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rango.models import Category, Page, UserProfile
-from rango.forms import PageForm, CategoryForm, UserForm, LoginForm
+from rango.forms import PageForm, CategoryForm, UserForm, LoginForm, UpdateUserForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from rango.helper import visitor_cookie_handler, return_cookie_value
@@ -110,7 +110,7 @@ def confirm_email(request, uidb64, token):
         messages.success(request, 'You successfully confirmed your account. Welcome!')
         return redirect('index')
     else:
-        messages.error('Activation link is invalid or expired!')
+        messages.error(request, 'Activation link is invalid or expired!')
         return redirect('index')
 
 
@@ -121,6 +121,7 @@ def user_login(request):
             username = login_form.cleaned_data['email']
             password = login_form.cleaned_data['password']
             user = authenticate(username=username, password=password)
+            print(user)
             if user:
                 if user.is_active:
                     login(request, user)
@@ -128,8 +129,10 @@ def user_login(request):
                     return redirect('index')
                 else:
                     messages.error(request, 'Your account is disabled.')
+            else:
+                messages.error(request, 'Invalid username or password.')
         else:
-            messages.error('Invalid username or password.')
+            messages.error(request, 'Invalid username or password.')
     else:
         login_form = LoginForm()
     context_dict = {'login_form': login_form}
@@ -158,4 +161,43 @@ def resend_confirmation_email(request, uid):
         messages.error(request,'User not found!')
     return redirect('index')
 
+
+@login_required(login_url='user_login')
+def update_user_profile(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(data=request.POST, user=request.user)
+        if user_form.is_valid():
+            changed_email = False
+            fields_changed = []
+            user = request.user
+            if(user_form.cleaned_data['email'] != request.user.email):
+                print(request.user.email)
+                user.email = user_form.cleaned_data['email']
+                user.username = user.email
+                changed_email = True
+                fields_changed.append('email')
+            if(user_form.cleaned_data['password'] != ''):
+                user.set_password(user_form.cleaned_data['password'])
+                fields_changed.append('password')
+            user.save()
+            user_profile = UserProfile.objects.get(user=user)
+            if(user_form.cleaned_data['website'] != user_profile.website):
+                user_profile.website = user_form.cleaned_data['website']
+                fields_changed.append('website')
+            if 'picture' in request.FILES:
+                user_profile.picture = request.FILES['picture']
+                fields_changed.append('picture')
+            if changed_email:
+                user_profile.confirmed = False
+                send_confirmation_email(request, user)
+            user_profile.save()
+            messages.success(request,'You successfully changed your data: ' + ', '.join(fields_changed)+ '.')
+            return redirect('index')
+        else:
+            print(user_form.errors)
+            messages.error(request,'Check out your data, invalid form!')
+    else:
+        user_form = UpdateUserForm(user=request.user)
+    context_dict ={ 'update_user_form': user_form,}
+    return render(request,'auth/update_user_profile.html', context_dict)
 

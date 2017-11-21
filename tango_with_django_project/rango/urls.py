@@ -23,5 +23,6 @@ urlpatterns =[
     url(r'^confirm_user_email/$', views.confirm_user_email, name='confirm_user_email'),
     url(r'^resend_confirmation_email/(?P<uid>[0-9A-Za-z_\-]+)/$', views.resend_confirmation_email, name='resend_confirmation_email'),
 
+    url(r'^update_user_profile/$', views.update_user_profile, name='update_user_profile'),
 
 ]

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load rango_template_tags %}
+<html>
+  <head>
+    <title>
+        Rango -
+        {% block title_block %}
+            Tango With Django
+        {% endblock %}
+    </title>
+  </head>
+  <body>
+    <div>
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        {% block body_block %}
+        {% endblock %}
+    </div>
+    <hr />
+    <div>
+        <ul>
+            {% if user.is_authenticated %}
+                {% get_user_profile user %}
+                <li><a href="{% url 'add_category' %}">Add a Category</a><br /></li>
+                <li><a href="{% url 'add_page' %}">Add a Page</a><br /></li>
+                <li><a href="{% url 'user_logout' %}">Log Out</a><br /></li>
+                <li><a href="{% url 'update_user_profile' %}">Change Your Profile</a><br /></li>
+            {% else %}
+                <li><a href="{% url 'user_login' %}">Log In</a><br /></li>
+                <li><a href="{% url 'register' %}">Register</a><br /></li>
+            {% endif %}
+            <li><a href="{% url 'index' %}">Index</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+        </ul>
+    </div>
+  </body>
+  <div>
+    {% block sidebar_block %}
+      {% get_category_list category %}
+    {% endblock %}
+  </div>
+
+</html>
