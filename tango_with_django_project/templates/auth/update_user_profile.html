@@ -1,5 +1,6 @@
 {% extends 'rango/base.html' %}
 {% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title_block %}
   Update Your Information
@@ -10,8 +11,12 @@
     <p>Leave blank the fields you want to keep unchanged.</p>
     <form id="user_form" action="{% url 'update_user_profile' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ update_user_form.as_p }}
-    <input type="submit" name="submit" value="Submit" />
+    {% bootstrap_form update_user_form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">
+            {% bootstrap_icon "star" %} Submit
+        </button>
+    {% endbuttons %}
     </form>
 {% endblock %}
 
