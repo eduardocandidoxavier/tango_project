@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load rango_template_tags %}
+<!-- saved from url=(0052)http://v4-alpha.getbootstrap.com/examples/dashboard/ -->
+<html lang="en" class="gr__v4-alpha_getbootstrap_com"><head><meta http-equiv="Content-Type"
+                                                                  content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+
+    <title>
+        Rango -
+        {% block title_block %}
+            Tango With Django
+        {% endblock %}
+    </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap_files/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'bootstrap_files/dashboard.css' %}" rel="stylesheet">
+  </head>
+
+  <body data-gr-c-s-loaded="true">
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button"
+              data-toggle="collapse" data-target="#navbarsExampleDefault"
+              aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          {% if user.is_authenticated %}
+            {% get_user_profile user %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'add_category' %}">Add a Category</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'add_page' %}">Add a Page</a>
+            </li>
+            <li class="nav-item">
+              <a  class="nav-link" href="{% url 'user_logout' %}">Log Out</a>
+            </li>
+            <li class="nav-item">
+              <a  class="nav-link" href="{% url 'update_user_profile' %}">Change Your Profile</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a  class="nav-link" href="{% url 'user_login' %}">Log In</a><br />
+            </li>
+            <li class="nav-item">
+              <a  class="nav-link" href="{% url 'register' %}">Register</a><br />
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+        {% block sidebar_block %}
+          {% get_category_list %}
+        {% endblock %}
+        </div>
+
+        <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
+          <div>
+            {% if messages %}
+              <h2>Messages</h2>
+              <ul class="messages">
+              {% for message in messages %}
+                  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+          <div>
+          {% block body_block %}
+          {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'bootstrap_files/jquery-3.1.1.slim.min.js' %}"
+            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="{% static 'bootstrap_files/tether.min.js' %}"
+            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="{% static 'bootstrap_files/bootstrap.min.js' %}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'bootstrap_files/ie10-viewport-bug-workaround.js' %}"></script>
+  
+
+</body>
+</html>
