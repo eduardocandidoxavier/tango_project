@@ -35,7 +35,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '&1n7f+9$mu7-y-b^plu-prn&0y*^-^rqa*615
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['tango-django-tango.herokuapp.com', '.heroku.com']
+ALLOWED_HOSTS = ['tango-django-tango.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -155,7 +155,7 @@ DATABASES['default'].update(db_from_env)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # The URL to use when referring to static files (where they will be served from)
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
