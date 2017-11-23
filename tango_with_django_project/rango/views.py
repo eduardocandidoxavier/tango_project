@@ -220,7 +220,12 @@ def show_all_categories(request):
 
 @login_required(login_url='user_login')
 def show_all_users(request):
-    all_users = UserProfile.objects.all()
+    if request.method == 'POST':
+        search_username = request.POST['search_username']
+        print(search_username)
+        all_users = UserProfile.objects.filter(user__username__icontains=search_username)
+    else:
+        all_users = UserProfile.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(all_users, 10)
     try:
