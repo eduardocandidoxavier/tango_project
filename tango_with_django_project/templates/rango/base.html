@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 {% load rango_template_tags %}
-<!-- saved from url=(0052)http://v4-alpha.getbootstrap.com/examples/dashboard/ -->
-<html lang="en" class="gr__v4-alpha_getbootstrap_com"><head><meta http-equiv="Content-Type"
-                                                                  content="text/html; charset=UTF-8">
-    
+
+<!-- saved from url=(0052)http://v4-alpha.getbootstrap.com/examples/jumbotron/ -->
+<html lang="en" class="gr__v4-alpha_getbootstrap_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="icon" href="http://v4-alpha.getbootstrap.com/favicon.ico">
 
     <title>
         Rango -
@@ -21,91 +21,117 @@
     <link href="{% static 'bootstrap_files/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{% static 'bootstrap_files/dashboard.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap_files/jumbotron.css' %}" rel="stylesheet">
   </head>
 
-  <body data-gr-c-s-loaded="true">
+  <body data-gr-c-s-loaded="true"><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div>
+
     <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button"
-              data-toggle="collapse" data-target="#navbarsExampleDefault"
-              aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbar">
+      <a class="navbar-brand" href="{% url 'index' %}">Home</a>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}">About</a>
-          </li>
-          {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">All Categories</a>
+            </li>
+            {% if user.is_authenticated %}
             {% get_user_profile user %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'add_category' %}">Add a Category</a>
+                <a class="nav-link" href="{% url 'add_category' %}">Add a Category</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'add_page' %}">Add a Page</a>
+                <a class="nav-link" href="{% url 'add_page' %}">Add a Page</a>
             </li>
-            <li class="nav-item">
-              <a  class="nav-link" href="{% url 'user_logout' %}">Log Out</a>
-            </li>
-            <li class="nav-item">
-              <a  class="nav-link" href="{% url 'update_user_profile' %}">Change Your Profile</a>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a  class="nav-link" href="{% url 'user_login' %}">Log In</a><br />
-            </li>
+            {% else %}
             <li class="nav-item">
               <a  class="nav-link" href="{% url 'register' %}">Register</a><br />
             </li>
-          {% endif %}
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About</a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Your Area</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    {% if user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url 'update_user_profile' %}">Update Profile</a>
+                        <a class="dropdown-item" href="{% url 'user_logout' %}">Log Out</a>
+                    {% else %}
+                        <a class="dropdown-item" href="{% url 'user_login' %}">Log In</a>
+                    {% endif %}
+                </div>
+            </li>
         </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
       </div>
     </nav>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
-        {% block sidebar_block %}
-          {% get_category_list %}
-        {% endblock %}
-        </div>
-
-        <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
           <div>
             {% if messages %}
-              {% for message in messages %}
+                {% for message in messages %}
                 <div class="alert {{ message.tags }} alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
                 {{ message }}
                 </div>
-              {% endfor %}
+                {% endfor %}
             {% endif %}
           </div>
-          <div>
           {% block body_block %}
           {% endblock %}
-          </div>
-        </div>
       </div>
     </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+            {% block bottom1 %}
+            {% endblock %}
+        </div>
+        <div class="col-md-4">
+            {% block bottom2 %}
+            {% endblock %}
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>© Rango 2017</p>
+      </footer>
+    </div> <!-- /container -->
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{% static 'bootstrap_files/jquery-3.1.1.slim.min.js' %}"
-            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="{% static 'bootstrap_files/jquery-3.1.1.slim.min.js' %}" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="{% static 'bootstrap_files/tether.min.js' %}"
-            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="{% static 'bootstrap_files/tether.min.js' %}" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="{% static 'bootstrap_files/bootstrap.min.js' %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'bootstrap_files/ie10-viewport-bug-workaround.js' %}"></script>
-  
 
-</body>
-</html>
+
+</body></html>
+
+
