@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from rango.helper import verify_confirmation_token, send_confirmation_email
 from django.contrib.auth.decorators import login_required
 from rango.decorators import user_email_confirmed
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -201,3 +202,17 @@ def update_user_profile(request):
     context_dict ={ 'update_user_form': user_form,}
     return render(request,'auth/update_user_profile.html', context_dict)
 
+
+def show_all_categories(request):
+    all_categories = Category.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(all_categories, 10)
+    try:
+        categories = paginator.page(page)
+    except PageNotAnInteger:
+        categories = paginator.page(1)
+    except EmptyPage:
+        categories = paginator.page(paginator.num_pages)
+
+    context_dic = {'categories': categories}
+    return render(request, 'rango/show_all_categories.html', context_dic)

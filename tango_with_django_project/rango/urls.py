@@ -25,4 +25,6 @@ urlpatterns =[
 
     url(r'^update_user_profile/$', views.update_user_profile, name='update_user_profile'),
 
+    url(r'^show_all_categories', views.show_all_categories, name='show_all_categories'),
+
 ]
