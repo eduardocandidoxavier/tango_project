@@ -216,3 +216,18 @@ def show_all_categories(request):
 
     context_dic = {'categories': categories}
     return render(request, 'rango/show_all_categories.html', context_dic)
+
+
+@login_required(login_url='user_login')
+def show_all_users(request):
+    all_users = UserProfile.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(all_users, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+    context_dic = {'users': users}
+    return render(request, 'rango/show_all_users.html', context_dic)

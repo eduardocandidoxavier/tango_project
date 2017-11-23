@@ -27,4 +27,6 @@ urlpatterns =[
 
     url(r'^show_all_categories', views.show_all_categories, name='show_all_categories'),
 
+    url(r'^show_all_users', views.show_all_users, name='show_all_users'),
+
 ]
