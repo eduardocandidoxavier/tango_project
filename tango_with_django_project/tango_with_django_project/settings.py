@@ -35,7 +35,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '&1n7f+9$mu7-y-b^plu-prn&0y*^-^rqa*615
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tango-django-tango.herokuapp.com', '.heroku.com']
 
 
 # Application definition
